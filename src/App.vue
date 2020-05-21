@@ -1,20 +1,20 @@
 <template>
-  <div id="app">
+  <v-app>
     <HelloWorld />
-  </div>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/HelloWorld';
 
 export default {
   name: 'App',
+
   components: {
-    HelloWorld
-  }
-}
+    HelloWorld,
+  },
+
+  data: () => ({
+  }),
+};
 </script>
-
-<style>
-
-</style>

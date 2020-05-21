@@ -1,17 +1,19 @@
 <template>
-  <div class="hello">
-
-  </div>
+  <v-container>
+    <Form />
+  </v-container>
 </template>
 
 <script>
+import Form from "./Form";
+
 export default {
-  name: 'HelloWorld',
-  props: {
-  }
-}
+  name: "HelloWorld",
+
+  components: {
+    Form
+  },
+
+  data: () => ({})
+};
 </script>
-
-<style scoped>
-
-</style>
