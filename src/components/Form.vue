@@ -19,7 +19,7 @@
         @blur="$v.email.$touch()"
       ></v-text-field>
 
-      <v-btn class="mr-4 green" @click="addUser">submit</v-btn>
+      <v-btn class="mr-4 green" @click="addUser()">submit</v-btn>
       <v-btn @click="clear">clear</v-btn>
     </form>
 
@@ -82,14 +82,17 @@ export default {
   },
 
   methods: {
-    submit() {
-      this.$v.$touch();
-    },
     async addUser() {
       const res = await axios.post(baseURL, {
         name: this.name,
         email: this.email
       });
+
+      await axios.patch(baseURL + "/" + res.data.id, {
+        name: (this.name = "updated"),
+        email: (this.email = "updated@gmail.com")
+      });
+
       this.users = [...this.users, res.data];
       this.name = "";
       this.email = "";
