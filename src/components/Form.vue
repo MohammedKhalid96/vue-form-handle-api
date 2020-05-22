@@ -1,48 +1,43 @@
 <template>
-  <form>
-    <v-text-field
-      v-model="name"
-      :error-messages="nameErrors"
-      :counter="10"
-      label="Name"
-      required
-      @input="$v.name.$touch()"
-      @blur="$v.name.$touch()"
-    ></v-text-field>
-    <v-text-field
-      v-model="email"
-      :error-messages="emailErrors"
-      label="E-mail"
-      required
-      @input="$v.email.$touch()"
-      @blur="$v.email.$touch()"
-    ></v-text-field>
-    <v-select
-      v-model="select"
-      :items="items"
-      :error-messages="selectErrors"
-      label="Item"
-      required
-      @change="$v.select.$touch()"
-      @blur="$v.select.$touch()"
-    ></v-select>
-    <v-checkbox
-      v-model="checkbox"
-      :error-messages="checkboxErrors"
-      label="Do you agree?"
-      required
-      @change="$v.checkbox.$touch()"
-      @blur="$v.checkbox.$touch()"
-    ></v-checkbox>
+  <div>
+    <form>
+      <v-text-field
+        v-model="name"
+        :error-messages="nameErrors"
+        :counter="10"
+        label="Name"
+        required
+        @input="$v.name.$touch()"
+        @blur="$v.name.$touch()"
+      ></v-text-field>
+      <v-text-field
+        v-model="email"
+        :error-messages="emailErrors"
+        label="E-mail"
+        required
+        @input="$v.email.$touch()"
+        @blur="$v.email.$touch()"
+      ></v-text-field>
 
-    <v-btn class="mr-4" @click="submit">submit</v-btn>
-    <v-btn @click="clear">clear</v-btn>
-  </form>
+      <v-btn class="mr-4 green" @click="addUser">submit</v-btn>
+      <v-btn @click="clear">clear</v-btn>
+    </form>
+
+    <div class="users">
+      <ul v-for="user of users" :key="user.id">
+        <li class="name">{{user.name}}</li>
+        <li class="email">{{user.email}}</li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
 import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
+
+import axios from "axios";
+const baseURL = "http://localhost:3000/users";
 
 export default {
   name: "Form",
@@ -50,36 +45,16 @@ export default {
 
   validations: {
     name: { required, maxLength: maxLength(10) },
-    email: { required, email },
-    select: { required },
-    checkbox: {
-      checked(val) {
-        return val;
-      }
-    }
+    email: { required, email }
   },
 
   data: () => ({
     name: "",
     email: "",
-    select: null,
-    items: ["Item 1", "Item 2", "Item 3", "Item 4"],
-    checkbox: false
+    users: []
   }),
 
   computed: {
-    checkboxErrors() {
-      const errors = [];
-      if (!this.$v.checkbox.$dirty) return errors;
-      !this.$v.checkbox.checked && errors.push("You must agree to continue!");
-      return errors;
-    },
-    selectErrors() {
-      const errors = [];
-      if (!this.$v.select.$dirty) return errors;
-      !this.$v.select.required && errors.push("Item is required");
-      return errors;
-    },
     nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
@@ -97,17 +72,52 @@ export default {
     }
   },
 
+  async created() {
+    try {
+      const res = await axios.get(baseURL);
+      this.users = res.data;
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
   methods: {
     submit() {
       this.$v.$touch();
+    },
+    async addUser() {
+      const res = await axios.post(baseURL, {
+        name: this.name,
+        email: this.email
+      });
+      this.users = [...this.users, res.data];
+      this.name = "";
+      this.email = "";
     },
     clear() {
       this.$v.$reset();
       this.name = "";
       this.email = "";
-      this.select = null;
-      this.checkbox = false;
     }
   }
 };
 </script>
+
+<style scoped>
+ul {
+  margin-top: 2em;
+  padding-left: 0 !important;
+}
+
+li {
+  list-style: none;
+}
+
+.name {
+  color: #692104;
+}
+
+.email {
+  margin-bottom: 1em;
+}
+</style>
