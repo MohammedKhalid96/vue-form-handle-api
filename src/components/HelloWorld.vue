@@ -8,7 +8,7 @@
 import Form from "./Form";
 
 export default {
-  name: "HelloWorld",
+  name: "HellWorld",
 
   components: {
     Form
