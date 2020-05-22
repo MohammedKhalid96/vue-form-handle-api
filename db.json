@@ -1,0 +1,19 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Mohamed Khaled",
+            "email": "mohammedkhalid96@outlook.com"
+        },
+        {
+            "id": 2,
+            "name": "Ahmed Wagih",
+            "email": "ahmedwagih@outlook.com"
+        },
+        {
+            "id": 3,
+            "name": "Eslam Mohamed",
+            "email": "eslammohamed@outlook.com"
+        }
+    ]
+}
