@@ -1,6 +1,14 @@
 <template>
-  <div>
+  <div class="text-center">
     <form>
+      <v-text-field
+        v-model="imgURL"
+        :error-messages="imgURLErrors"
+        label="Image Url"
+        required
+        @input="$v.imgURL.$touch()"
+        @blur="$v.imgURL.$touch()"
+      ></v-text-field>
       <v-text-field
         v-model="name"
         :error-messages="nameErrors"
@@ -25,6 +33,7 @@
 
     <div class="users">
       <ul v-for="user of users" :key="user.id">
+        <img class="avatar" :src="user.imgURL" />
         <li class="name">{{user.name}}</li>
         <li class="email">{{user.email}}</li>
       </ul>
@@ -44,17 +53,25 @@ export default {
   mixins: [validationMixin],
 
   validations: {
+    imgURL: { required },
     name: { required, maxLength: maxLength(10) },
     email: { required, email }
   },
 
   data: () => ({
+    imgURL: "",
     name: "",
     email: "",
     users: []
   }),
 
   computed: {
+    imgURLErrors() {
+      const errors = [];
+      if (!this.$v.imgURL.$dirty) return errors;
+      !this.$v.imgURL.required && errors.push("Image URL is required.");
+      return errors;
+    },
     nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
@@ -84,6 +101,7 @@ export default {
   methods: {
     async addUser() {
       const res = await axios.post(baseURL, {
+        imgURL: this.imgURL,
         name: this.name,
         email: this.email
       });
@@ -94,11 +112,13 @@ export default {
       });
 
       this.users = [...this.users, res.data];
+      this.imgURL = "",
       this.name = "";
       this.email = "";
     },
     clear() {
       this.$v.$reset();
+      this.imgURL = "";
       this.name = "";
       this.email = "";
     }
@@ -108,12 +128,20 @@ export default {
 
 <style scoped>
 ul {
-  margin-top: 2em;
+  margin-top: 3em;
   padding-left: 0 !important;
 }
 
 li {
   list-style: none;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 0.5em;
 }
 
 .name {

@@ -2,23 +2,21 @@
   "users": [
     {
       "id": 1,
+      "imgURL": "https://gratisography.com/wp-content/uploads/2020/03/gratisography-old-building-corner-800x525.jpg",
       "name": "Mohamed Khaled",
       "email": "mohammedkhalid96@outlook.com"
     },
     {
       "id": 2,
+      "imgURL": "https://gratisography.com/wp-content/uploads/2020/04/curved-brick-building-800x525.jpg",
       "name": "Ahmed Wagih",
       "email": "ahmedwagih@outlook.com"
     },
     {
       "id": 3,
+      "imgURL": "https://gratisography.com/wp-content/uploads/2018/05/gratisography-252H-800x525.jpg",
       "name": "Eslam Mohamed",
       "email": "eslammohamed@outlook.com"
-    },
-    {
-      "name": "updated",
-      "email": "updated@gmail.com",
-      "id": 4
     }
   ]
 }
