@@ -36,6 +36,7 @@
         <img class="avatar" :src="user.imgURL" />
         <li class="name">{{user.name}}</li>
         <li class="email">{{user.email}}</li>
+        <a class="link" target="_blank" :href="serverURL+'/'+user.id">User Profile</a>
       </ul>
     </div>
   </div>
@@ -62,7 +63,8 @@ export default {
     imgURL: "",
     name: "",
     email: "",
-    users: []
+    users: [],
+    serverURL: "http://localhost:3000/users"
   }),
 
   computed: {
@@ -112,8 +114,7 @@ export default {
       });
 
       this.users = [...this.users, res.data];
-      this.imgURL = "",
-      this.name = "";
+      (this.imgURL = ""), (this.name = "");
       this.email = "";
     },
     clear() {
@@ -149,6 +150,11 @@ li {
 }
 
 .email {
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
+}
+
+.link {
+  display: inline-block;
+  text-decoration: none;
 }
 </style>
