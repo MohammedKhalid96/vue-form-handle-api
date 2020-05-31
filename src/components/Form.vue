@@ -63,7 +63,7 @@ export default {
     name: "",
     email: "",
     users: [],
-    baseURL: "https://shawerly.net/public/v1/users"
+    baseURL: "http://localhost:3000/users"
   }),
 
   computed: {
@@ -94,7 +94,6 @@ export default {
     try {
       const res = await axios.get(this.baseURL);
       this.users = res.data;
-      console.log(this.users);
     } catch (e) {
       console.error(e);
     }
