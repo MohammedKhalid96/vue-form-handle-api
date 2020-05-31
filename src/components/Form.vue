@@ -36,7 +36,7 @@
         <img class="avatar" :src="user.imgURL" />
         <li class="name">{{user.name}}</li>
         <li class="email">{{user.email}}</li>
-        <a class="link" target="_blank" :href="serverURL+'/'+user.id">User Profile</a>
+        <a class="link" target="_blank" :href="baseURL+'/'+user.id">User Profile</a>
       </ul>
     </div>
   </div>
@@ -47,7 +47,6 @@ import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
 
 import axios from "axios";
-const baseURL = "http://localhost:3000/users";
 
 export default {
   name: "Form",
@@ -64,7 +63,7 @@ export default {
     name: "",
     email: "",
     users: [],
-    serverURL: "http://localhost:3000/users"
+    baseURL: "https://shawerly.net/public/v1/users"
   }),
 
   computed: {
@@ -93,8 +92,9 @@ export default {
 
   async created() {
     try {
-      const res = await axios.get(baseURL);
+      const res = await axios.get(this.baseURL);
       this.users = res.data;
+      console.log(this.users);
     } catch (e) {
       console.error(e);
     }
@@ -102,13 +102,13 @@ export default {
 
   methods: {
     async addUser() {
-      const res = await axios.post(baseURL, {
+      const res = await axios.post(this.baseURL, {
         imgURL: this.imgURL,
         name: this.name,
         email: this.email
       });
 
-      await axios.patch(baseURL + "/" + res.data.id, {
+      axios.patch(this.baseURL + "/" + res.data.id, {
         name: (this.name = "updated"),
         email: (this.email = "updated@gmail.com")
       });
