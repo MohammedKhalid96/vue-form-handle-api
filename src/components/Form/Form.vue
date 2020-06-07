@@ -45,16 +45,12 @@ export default {
   name: "Form",
   mixins: [validateMixin],
 
-  props: {
-    usersArr: []
-  },
-
   data() {
     return {
       first_name: "",
       last_name: "",
       users: [],
-      baseURL: "http://localhost:3000/data/"
+      baseURL: "https://users.ahmedwagih.dev/public/v1/users"
     };
   },
 
@@ -62,6 +58,7 @@ export default {
     try {
       const res = await axios.get(this.baseURL);
       this.users = res.data;
+      console.log(res.data);
     } catch (e) {
       console.error(e);
     }
